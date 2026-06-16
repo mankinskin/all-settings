@@ -15,6 +15,10 @@ echo "==> Running setup (dependencies + submodules)..."
 bash "$SCRIPT_DIR/setup.sh"
 
 echo ""
+echo "==> Applying bash settings..."
+bash "$SCRIPT_DIR/bash-settings.sh"
+
+echo ""
 echo "==> Applying git settings..."
 ( cd "$SCRIPT_DIR" && bash git-settings.sh )
 
@@ -23,20 +27,11 @@ echo "==> Applying VSCode settings..."
 bash "$SCRIPT_DIR/vscode-settings.sh"
 
 echo ""
-echo "==> Applying vim settings..."
-VIMRC_SRC="$SCRIPT_DIR/vimrc/vimrc"
-VIMRC_DEST="$HOME/.vimrc"
-if [ -f "$VIMRC_SRC" ]; then
-    if [ -e "$VIMRC_DEST" ] && [ ! -L "$VIMRC_DEST" ]; then
-        echo "SKIP: ~/.vimrc already exists and is not a symlink — skipping to avoid overwrite."
-    elif [ -L "$VIMRC_DEST" ] && [ "$(readlink "$VIMRC_DEST")" = "$VIMRC_SRC" ]; then
-        echo "SKIP: ~/.vimrc symlink already up to date."
-    else
-        ln -sf "$VIMRC_SRC" "$VIMRC_DEST"
-        echo "SET:  ~/.vimrc -> $VIMRC_SRC"
-    fi
+echo "==> Applying vim/neovim settings..."
+if [ -f "$SCRIPT_DIR/vimrc/install.sh" ]; then
+    bash "$SCRIPT_DIR/vimrc/install.sh"
 else
-    echo "SKIP: vimrc submodule not found at $VIMRC_SRC"
+    echo "SKIP: vimrc/install.sh not found — submodule may not be initialised."
 fi
 
 echo ""

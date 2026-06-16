@@ -17,6 +17,7 @@ Re-run `install.sh` at any time to apply the latest settings.
 | Script | What it does |
 |---|---|
 | `setup.sh` | Initialises git submodules and installs `jq` |
+| `bash-settings.sh` | Symlinks `bashrc` → `~/.bashrc`, `profile` → `~/.profile`, `bash_profile` → `~/.bash_profile` |
 | `git-settings.sh` | Sets global git config (user, rebase, credential helper) from `user.env` |
 | `vscode-settings.sh` | Merges `vscode-settings.json` into the VSCode user settings file (skips keys that are already set) |
 | `vimrc/install.sh` | Symlinks `vimrc` → `~/.config/nvim/init.vim`, installs vim-plug, installs all plugins via `:PlugInstall` |

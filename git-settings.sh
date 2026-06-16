@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 get() {
     local key="$1"
     git config --global --get "$key" 

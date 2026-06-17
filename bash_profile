@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"

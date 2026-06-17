@@ -1,0 +1,6 @@
+# Force LF line endings for shell scripts and dotfiles
+*.sh        text eol=lf
+bashrc      text eol=lf
+bash_profile text eol=lf
+profile     text eol=lf
+bash_aliases text eol=lf

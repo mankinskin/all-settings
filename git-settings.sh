@@ -38,3 +38,9 @@ set_force pull.rebase true
 
 # Credential manager
 set_force credential.helper store
+
+# Editor
+set_force core.editor "vim"
+
+# Line Endings
+set_force core.autocrlf input

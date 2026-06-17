@@ -20,6 +20,7 @@ symlink() {
 
 echo "==> Linking bash config files..."
 symlink "$SCRIPT_DIR/bashrc"       "$HOME/.bashrc"
+symlink "$SCRIPT_DIR/bash_aliases" "$HOME/.bash_aliases"
 symlink "$SCRIPT_DIR/profile"      "$HOME/.profile"
 symlink "$SCRIPT_DIR/bash_profile" "$HOME/.bash_profile"
 

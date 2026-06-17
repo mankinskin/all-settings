@@ -30,9 +30,6 @@ set_if_unset() {
 set_if_unset user.email $USER_EMAIL
 set_if_unset user.name $USER_FULL_NAME
 
-# Disable warning about line-endings
-set_force core.autocrlf false
-
 # Auto rebase on pull
 set_force pull.rebase true
 

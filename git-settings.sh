@@ -33,6 +33,9 @@ set_if_unset user.name $USER_FULL_NAME
 # Auto rebase on pull
 set_force pull.rebase true
 
+# Auto set upstream
+set_force push.autoSetupRemote true
+
 # Credential manager
 set_force credential.helper store
 

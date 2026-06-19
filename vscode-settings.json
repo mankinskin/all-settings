@@ -22,6 +22,10 @@
         }
     },
     "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.allowChords": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.togglePanel"
+    ],
     "terminal.integrated.tabs.enabled": false,
     "terminal.integrated.initialHint": false,
     "extensions.experimental.affinity": {

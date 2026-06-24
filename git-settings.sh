@@ -27,8 +27,8 @@ set_if_unset() {
 
 # Set user
 . ./user.env
-set_if_unset user.email $USER_EMAIL
-set_if_unset user.name $USER_FULL_NAME
+set_if_unset user.email "$USER_EMAIL"
+set_if_unset user.name "$USER_FULL_NAME"
 
 # Auto rebase on pull
 set_force pull.rebase true
@@ -37,7 +37,14 @@ set_force pull.rebase true
 set_force push.autoSetupRemote true
 
 # Credential manager
-set_force credential.helper store
+set_force credential.helper manager
+
+# Default GitHub account for GCM
+if [ -n "${GITHUB_USERNAME:-}" ]; then
+    set_force credential.https://github.com.username "$GITHUB_USERNAME"
+else
+    echo "Skipped credential.https://github.com.username (GITHUB_USERNAME is unset)"
+fi
 
 # Editor
 set_force core.editor "vim"

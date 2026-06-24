@@ -31,6 +31,9 @@
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
+    "vscode-neovim.neovimInitVimPaths.win32": "${env:USERPROFILE}/AppData/Local/nvim/init.vim",
+    "vscode-neovim.neovimInitVimPaths.linux": "${env:HOME}/.config/nvim/init.vim",
+    "vscode-neovim.neovimInitVimPaths.darwin": "${env:HOME}/.config/nvim/init.vim",
     "editor.minimap.enabled": false,
     "git.confirmSync": false,
     "chat.instructionsFilesLocations": {

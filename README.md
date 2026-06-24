@@ -12,6 +12,9 @@ bash install.sh
 
 Re-run `install.sh` at any time to apply the latest settings.
 
+On Windows, symlink creation for Vim/Neovim config requires either Developer Mode
+or an elevated shell (Administrator).
+
 ## What it installs
 
 | Script | What it does |

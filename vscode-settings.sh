@@ -14,6 +14,24 @@ strip_jsonc_comments() {
     sed '/^[[:space:]]*\/\//d'
 }
 
+# Some extensions (e.g. vscode-neovim) do not expand ${env:*} placeholders
+# in custom settings. Resolve known placeholders at install time.
+resolve_template_value() {
+    local key="$1"
+    local value_json="$2"
+
+    if [[ "$key" == vscode-neovim.neovimInitVimPaths.* ]] && echo "$value_json" | jq -e 'type == "string"' >/dev/null 2>&1; then
+        local value
+        value=$(echo "$value_json" | jq -r '.')
+        value="${value//'${env:USERPROFILE}'/$HOME}"
+        value="${value//'${env:HOME}'/$HOME}"
+        value="${value//'${userHome}'/$HOME}"
+        printf '%s' "$value" | jq -R '.'
+    else
+        printf '%s' "$value_json"
+    fi
+}
+
 if ! command -v jq &>/dev/null; then
     echo "ERROR: jq is required but not installed. Install it from https://jqlang.org/" >&2
     exit 1
@@ -36,13 +54,35 @@ CURRENT=$(cat "$SETTINGS_FILE")
 UPDATED="$CURRENT"
 set_count=0
 skip_count=0
+migrate_count=0
+
+BROKEN_NEOVIM_WIN32='${env:USERPROFILE}/AppData/Local/nvim/init.vim'
+BROKEN_NEOVIM_POSIX='${env:HOME}/.config/nvim/init.vim'
 
 while IFS= read -r key; do
+    value=$(jq --arg k "$key" '.[$k]' "$SETTINGS_TEMPLATE")
+    value=$(resolve_template_value "$key" "$value")
+
     if echo "$CURRENT" | jq -e --arg k "$key" 'has($k) and .[$k] != null' > /dev/null 2>&1; then
-        echo "SKIP: '$key' is already set" >&2
-        (( skip_count++ )) || true
+        current_value=$(echo "$CURRENT" | jq -r --arg k "$key" '.[$k]')
+
+        if [[ "$key" == "vscode-neovim.neovimInitVimPaths.win32" ]] && [[ "$current_value" == "$BROKEN_NEOVIM_WIN32" ]]; then
+            UPDATED=$(echo "$UPDATED" | jq --arg k "$key" --argjson v "$value" '. + {($k): $v}')
+            echo "MIGRATE: '$key' from unresolved placeholder path"
+            (( migrate_count++ )) || true
+        elif [[ "$key" == "vscode-neovim.neovimInitVimPaths.linux" ]] && [[ "$current_value" == "$BROKEN_NEOVIM_POSIX" ]]; then
+            UPDATED=$(echo "$UPDATED" | jq --arg k "$key" --argjson v "$value" '. + {($k): $v}')
+            echo "MIGRATE: '$key' from unresolved placeholder path"
+            (( migrate_count++ )) || true
+        elif [[ "$key" == "vscode-neovim.neovimInitVimPaths.darwin" ]] && [[ "$current_value" == "$BROKEN_NEOVIM_POSIX" ]]; then
+            UPDATED=$(echo "$UPDATED" | jq --arg k "$key" --argjson v "$value" '. + {($k): $v}')
+            echo "MIGRATE: '$key' from unresolved placeholder path"
+            (( migrate_count++ )) || true
+        else
+            echo "SKIP: '$key' is already set" >&2
+            (( skip_count++ )) || true
+        fi
     else
-        value=$(jq --arg k "$key" '.[$k]' "$SETTINGS_TEMPLATE")
         UPDATED=$(echo "$UPDATED" | jq --arg k "$key" --argjson v "$value" '. + {($k): $v}')
         echo "SET:  '$key'"
         (( set_count++ )) || true
@@ -51,7 +91,7 @@ done < <(jq -r 'keys[]' "$SETTINGS_TEMPLATE" | tr -d '\r')
 
 printf '%s' "$UPDATED" | jq '.' > "$SETTINGS_FILE"
 echo ""
-echo "Done. Applied $set_count setting(s), skipped $skip_count. Settings file: $SETTINGS_FILE"
+echo "Done. Applied $set_count setting(s), migrated $migrate_count, skipped $skip_count. Settings file: $SETTINGS_FILE"
 
 # --- keybindings.json (array merge by key+command) ---
 

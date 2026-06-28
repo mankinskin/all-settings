@@ -1,78 +1,89 @@
 {
-    "workbench.startupEditor": "none",
-    "terminal.integrated.profiles.windows": {
-        "PowerShell": {
-            "source": "PowerShell",
-            "icon": "terminal-powershell"
-        },
-        "Command Prompt": {
-            "path": [
-                "${env:windir}\\Sysnative\\cmd.exe",
-                "${env:windir}\\System32\\cmd.exe"
-            ],
-            "args": [],
-            "icon": "terminal-cmd"
-        },
-        "Git Bash": {
-            "path": "C:\\Program Files\\Git\\bin\\bash.exe",
-            "args": [
-                "--login",
-                "-i"
-            ]
-        }
+  "workbench.startupEditor": "none",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
     },
-    "terminal.integrated.defaultProfile.windows": "Git Bash",
-    "terminal.integrated.allowChords": false,
-    "terminal.integrated.commandsToSkipShell": [
-        "-workbench.action.togglePanel"
-    ],
-    "terminal.integrated.tabs.enabled": false,
-    "terminal.integrated.initialHint": false,
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
     },
-    "vscode-neovim.neovimInitVimPaths.win32": "${env:USERPROFILE}/AppData/Local/nvim/init.vim",
-    "vscode-neovim.neovimInitVimPaths.linux": "${env:HOME}/.config/nvim/init.vim",
-    "vscode-neovim.neovimInitVimPaths.darwin": "${env:HOME}/.config/nvim/init.vim",
-    "editor.minimap.enabled": false,
-    "git.confirmSync": false,
-    "chat.instructionsFilesLocations": {
-        ".agents/instructions": true
+    "Git Bash": {
+      "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+      "args": [
+        "--login",
+        "-i"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.allowChords": false,
+  "terminal.integrated.commandsToSkipShell": [
+    "-workbench.action.togglePanel"
+  ],
+  "terminal.integrated.tabs.enabled": false,
+  "terminal.integrated.initialHint": false,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vscode-neovim.neovimInitVimPaths.win32": "${env:USERPROFILE}/AppData/Local/nvim/init.vim",
+  "vscode-neovim.neovimInitVimPaths.linux": "${env:HOME}/.config/nvim/init.vim",
+  "vscode-neovim.neovimInitVimPaths.darwin": "${env:HOME}/.config/nvim/init.vim",
+  "editor.minimap.enabled": false,
+  "git.confirmSync": false,
+  "chat.instructionsFilesLocations": {
+    ".agents/instructions": true
+  },
+  "chat.promptFilesLocations": {
+    ".agents/prompts": true
+  },
+  "chat.agentFilesLocations": {
+    ".agents/agents": true
+  },
+  "window.density.editorTabHeight": "compact",
+  "chat.viewSessions.orientation": "stacked",
+  "chat.agent.maxRequests": 1000,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash",
+      "icon": "terminal-bash"
     },
-    "chat.promptFilesLocations": {
-        ".agents/prompts": true
+    "zsh": {
+      "path": "zsh"
     },
-    "chat.agentFilesLocations": {
-        ".agents/agents": true
+    "fish": {
+      "path": "fish"
     },
-    "window.density.editorTabHeight": "compact",
-    "chat.viewSessions.orientation": "stacked",
-    "chat.agent.maxRequests": 1000,
-    "github.copilot.enable": {
-        "*": false,
-        "plaintext": false,
-        "markdown": false,
-        "scminput": false
+    "tmux": {
+      "path": "tmux",
+      "icon": "terminal-tmux"
     },
-    "terminal.integrated.profiles.linux": {
-        "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-        },
-        "zsh": {
-            "path": "zsh"
-        },
-        "fish": {
-            "path": "fish"
-        },
-        "tmux": {
-            "path": "tmux",
-            "icon": "terminal-tmux"
-        },
-        "pwsh": {
-            "path": "pwsh",
-            "icon": "terminal-powershell"
-        }
-    },
-    "workbench.editor.wrapTabs": true
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    }
+  },
+  "workbench.editor.wrapTabs": true,
+  "chat.tools.urls.autoApprove": {
+    "https://code.visualstudio.com": true,
+    "https://github.com/microsoft/vscode/wiki/*": true,
+    "https://github.com": {
+      "approveRequest": false,
+      "approveResponse": true
+    }
+  },
+  "diffEditor.renderSideBySide": false,
+  "editor.wordWrap": "wordWrapColumn",
+  "extensions.ignoreRecommendations": true
 }

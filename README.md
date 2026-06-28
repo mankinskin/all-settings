@@ -23,6 +23,7 @@ or an elevated shell (Administrator).
 | `bash-settings.sh` | Symlinks `bashrc` → `~/.bashrc`, `profile` → `~/.profile`, `bash_profile` → `~/.bash_profile` |
 | `git-settings.sh` | Sets global git config (user, rebase, credential manager, default GitHub account) from `user.env` |
 | `vscode-settings.sh` | Merges `vscode-settings.json` into the VSCode user settings file (skips keys that are already set) |
+| `vscode-settings-sync.sh` | Reverse of `vscode-settings.sh`: pulls changes from the live VSCode `settings.json` back into the `vscode-settings.json` template, prompting for each diff |
 | `vimrc/install.sh` | Symlinks `vimrc` → `~/.config/nvim/init.vim`, installs vim-plug, installs all plugins via `:PlugInstall` |
 
 ## Submodules
@@ -50,3 +51,16 @@ export GITHUB_USERNAME="your-github-username"
 
 Git identity fields are only written when they are not already set — existing values are preserved.
 The GitHub default account is written to `credential.https://github.com.username`.
+
+## Syncing VSCode settings back to the repo
+
+After tweaking settings live in VSCode, pull those changes back into the
+tracked template so they can be committed:
+
+```bash
+bash vscode-settings-sync.sh        # walks each diff and asks for confirmation
+bash vscode-settings-sync.sh --yes  # apply every change without prompting
+```
+
+It reports added, modified, and removed keys compared with the active
+`settings.json`. Review and commit `vscode-settings.json` afterwards.

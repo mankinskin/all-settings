@@ -84,6 +84,6 @@
     }
   },
   "diffEditor.renderSideBySide": false,
-  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrap": "on",
   "extensions.ignoreRecommendations": true
 }

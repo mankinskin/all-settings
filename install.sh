@@ -27,6 +27,10 @@ echo "==> Applying VSCode settings..."
 bash "$SCRIPT_DIR/vscode-settings.sh"
 
 echo ""
+echo "==> Installing VSCode extensions..."
+bash "$SCRIPT_DIR/vscode-extensions.sh"
+
+echo ""
 echo "==> Applying vim/neovim settings..."
 if [ -f "$SCRIPT_DIR/vimrc/install.sh" ]; then
     bash "$SCRIPT_DIR/vimrc/install.sh"

@@ -24,6 +24,8 @@ or an elevated shell (Administrator).
 | `git-settings.sh` | Sets global git config (user, rebase, credential manager, default GitHub account) from `user.env` |
 | `vscode-settings.sh` | Merges `vscode-settings.json` into the VSCode user settings file (skips keys that are already set) |
 | `vscode-settings-sync.sh` | Reverse of `vscode-settings.sh`: pulls changes from the live VSCode `settings.json` back into the `vscode-settings.json` template, prompting for each diff |
+| `vscode-extensions.sh` | Installs the tracked VS Code extensions from `vscode-extensions.txt` with `code --install-extension` |
+| `vscode-extensions-sync.sh` | Exports the current VS Code extensions with `code --list-extensions` into `vscode-extensions.txt` |
 | `vimrc/install.sh` | Symlinks `vimrc` → `~/.config/nvim/init.vim`, installs vim-plug, installs all plugins via `:PlugInstall` |
 
 ## Submodules
@@ -64,3 +66,15 @@ bash vscode-settings-sync.sh --yes  # apply every change without prompting
 
 It reports added, modified, and removed keys compared with the active
 `settings.json`. Review and commit `vscode-settings.json` afterwards.
+
+## Syncing VS Code extensions back to the repo
+
+Export the currently installed extensions into the tracked list before
+committing changes:
+
+```bash
+bash vscode-extensions-sync.sh
+```
+
+On a new machine, `install.sh` will call `vscode-extensions.sh` and install
+every extension listed in `vscode-extensions.txt`.

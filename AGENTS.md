@@ -1,27 +1,48 @@
 # AGENTS.md
 
-Coding agent rules for the `all-settings` repository.
+A description of the `all-settings` repository. Read top to bottom: earlier
+sections frame the sections that follow. Preserve this structure: every change
+keeps the patterns below intact, and validates the scripts still run cleanly.
 
 ## Purpose
-This repo manages personal dotfiles and editor settings. Every script is a
-thin installer — keep scripts simple, idempotent, and safe to re-run.
+This repo manages personal dotfiles and editor settings. Each script applies
+one tool's configuration and leaves existing user state in place.
 
-## Rules
+## Core Behavior
+- A non-symlink file at a destination stays untouched; the script skips it and
+  reports the skip.
+- `install.sh` is the single entry point. It runs `setup.sh` first, then each
+  settings script in sequence.
+- Scripts are idempotent. Re-running changes state only when something is
+  missing or new, and reports what it skips.
 
-- **All scripts must be idempotent.** Re-running `install.sh` must never
-  destructively overwrite an existing non-symlink file.
-- **Never clobber real files.** Use the `symlink()` pattern: skip if the
-  destination exists and is not a symlink.
-- **`install.sh` is the single entry point.** Every new settings script must
-  be called from `install.sh`. Do not require users to run individual scripts.
-- **`setup.sh` installs dependencies.** Add new system-level dependencies
-  there, not inline in other scripts.
-- **Guard on availability.** Before installing editor config, check that the
-  editor is installed (e.g. `command -v nvim`). Skip gracefully if not found.
-- **Template files have no extension.** Dotfile templates live at the repo
-  root without a leading dot (e.g. `bashrc`, `profile`, `bash_profile`).
-- **Settings scripts are named `<tool>-settings.sh`** or `install.sh` inside
-  a submodule folder.
-- **Update the README table** when adding a new script or template.
-- **No secrets in tracked files.** Keep personal data (email, name) in
-  `user.env` only; never hard-code it elsewhere.
+## Environment And Dependencies
+- `setup.sh` initializes submodules and installs dependencies such as `jq`.
+  All system packages and setup steps live here.
+- Each script checks that its editor or CLI (`nvim`, `vim`, `code`, `jq`)
+  exists before acting, and exits `0` with a `SKIP` message when it is absent.
+- Scripts run under Git Bash on Windows: they use the AppData paths, the
+  PowerShell symlink-to-hardlink fallback, and `cygpath` path translation.
+
+## Script Patterns
+- Every script starts with `#!/usr/bin/env bash` and `set -euo pipefail`.
+- `SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"` resolves the
+  script directory, and repo files are referenced through it.
+- Every action prints a `SET:`, `SKIP:`, `MIGRATE:`, `INSTALL:`, or `ERROR:`
+  line, and the script ends with a summary count.
+- Scripts are thin shims over shared state and carry no logic beyond applying
+  their configuration.
+- A script that writes to a live target has a matching `*-sync.sh` counterpart
+  that exports live state back into the tracked file.
+- Interactive scripts accept a `-y`/`--yes` flag that applies every change
+  without prompting.
+- Tracked exports such as `vscode-extensions.txt` stay sorted and deduplicated.
+
+## Repository Structure And Naming
+- Dotfile templates sit at the repo root with no leading dot and no extension
+  (`bashrc`, `profile`, `bash_profile`).
+- Settings scripts are named `<tool>-settings.sh`; submodules carry their own
+  `install.sh`.
+- The README table lists every script and tracked export, and grows in the same
+  change that adds one.
+- Personal data—name, e-mail, GitHub identity—lives only in `user.env`.
